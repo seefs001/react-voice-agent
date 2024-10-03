@@ -171,7 +171,7 @@ class OpenAIVoiceReactAgent(BaseModel):
     )
     instructions: str | None = None
     tools: list[BaseTool] | None = None
-    url: str = Field(default=DEFAULT_URL)
+    url: str = os.environ.get("OPENAI_URL", DEFAULT_URL)
 
     async def aconnect(
         self,

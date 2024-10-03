@@ -7,16 +7,19 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install uv
 RUN pip install uv
 
-# Install any needed packages specified in requirements.txt
-RUN uv pip install -r requirements.txt
+# Set the working directory to /app/server
+WORKDIR /app/server
 
 # Make port 3000 available to the world outside this container
 EXPOSE 3000
 
-# Define environment variables
-
-# Run app.py when the container launches
+# Run app.py using uv when the container launches
 CMD ["uv", "run", "src/server/app.py"]
